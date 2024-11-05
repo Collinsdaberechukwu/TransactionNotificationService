@@ -28,9 +28,6 @@ services:
     restart: always
     ports:
       - "16221:9000"
-    depends_on:
-      db:
-        condition: service_healthy
     environment:
       SPRING_DATASOURCE_URL: ${DB_URL}
       SPRING_DATASOURCE_USERNAME: ${DB_USERNAME}

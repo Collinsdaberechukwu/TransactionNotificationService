@@ -1,4 +1,46 @@
-version: '3.8'
+#services:
+#  db:
+#    image: mysql:8.0
+#    container_name: mysql_container
+#    restart: unless-stopped
+#    environment:
+#      MYSQL_ROOT_PASSWORD: collinso
+#      MYSQL_DATABASE: TransactionNotificationDb
+#      MYSQL_PASSWORD: collinso
+#    volumes:
+#      - database_data:/var/lib/mysql  # Corrected volume path
+#    ports:
+#      - "3309:3306"
+#
+#    healthcheck:
+#      test: [ "CMD", "mysqladmin", "ping", "-h", "127.0.0.1" ]
+#      interval: 30s
+#      timeout: 30s
+#      retries: 5
+#      start_period: 40s
+#
+#
+#  backend:
+#    build: .
+#    container_name: backend-container
+#    restart: always
+#    ports:
+#      - "16221:16221"
+#    depends_on:
+#      db:
+#        condition: service_healthy
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/TransactionNotificationDb  # Updated to use service name
+#      SPRING_DATASOURCE_USERNAME: root  # Using the root user directly
+#      SPRING_DATASOURCE_PASSWORD: collinso
+#      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+#      SPRING_JPA_SHOW_SQL: "true"
+#      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.MySQL8Dialect
+#
+#volumes:
+#  database_data:
+
+
 
 services:
   db:
@@ -8,38 +50,35 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: collinso
       MYSQL_DATABASE: TransactionNotificationDb
-      MYSQL_PASSWORD: collinso
     volumes:
-      - database_data:/var/lib/mysql  # Corrected volume path
+      - database_data:/var/lib/mysql
     ports:
       - "3309:3306"
 
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "127.0.0.1" ]
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1"]
       interval: 30s
       timeout: 30s
       retries: 5
-      start_period: 40s
-
+#      start_period: 40s
 
   backend:
     build: .
     container_name: backend-container
     restart: always
     ports:
-      - "16221:9000"
+      - "16221:16221"
     depends_on:
       db:
         condition: service_healthy
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/TransactionNotificationDb  # Use the service name 'db'
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/TransactionNotificationDb
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: collinso
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_JPA_SHOW_SQL: "true"
       SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.MySQL8Dialect
+      SERVER_PORT: 16221
 
 volumes:
-   database_data:
-
-
+  database_data:

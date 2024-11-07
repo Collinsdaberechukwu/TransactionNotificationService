@@ -66,8 +66,10 @@ services:
     build: .
     container_name: backend-container
     restart: always
-    ports:
-      - "16221:16221"
+    expose:
+      - '9000'
+    networks:
+      - network
     depends_on:
       db:
         condition: service_healthy
@@ -84,7 +86,7 @@ services:
         image: nginx:latest
         container_name: nginx-container
         ports:
-          - "80:80"
+          - "16221:16221"
         depends_on:
           - backend
         volumes:
@@ -92,3 +94,7 @@ services:
 
 volumes:
   database_data:
+
+networks:
+  network:
+    driver: bridge

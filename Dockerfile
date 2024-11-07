@@ -44,6 +44,6 @@ WORKDIR /app
 
 COPY --from=builder /app/target/*.jar /app/tns.jar
 
-EXPOSE 16221
+EXPOSE 9000
 
 ENTRYPOINT ["java", "-jar", "/app/tns.jar"]
